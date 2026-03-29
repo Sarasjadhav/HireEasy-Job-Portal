@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import Navbar from './components/shared/Navbar'
 import Login from './components/auth/Login'
 import Signup from './components/auth/Signup'
@@ -14,6 +16,10 @@ import AdminJobs from "./components/admin/AdminJobs";
 import PostJob from './components/admin/PostJob'
 import Applicants from './components/admin/Applicants'
 import ProtectedRoute from './components/admin/ProtectedRoute'
+import EditJob from './components/admin/EditJob'
+import axios from 'axios'
+import { setUser } from './redux/authSlice'
+import { USER_API_END_POINT } from './utils/constant'
 
 
 const appRouter = createBrowserRouter([
@@ -70,9 +76,31 @@ const appRouter = createBrowserRouter([
     path:"/admin/jobs/:id/applicants",
     element:<ProtectedRoute><Applicants/></ProtectedRoute> 
   },
+  {
+    path:"/admin/jobs/:id/edit",
+    element:<ProtectedRoute><EditJob/></ProtectedRoute> 
+  },
 
 ])
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const res = await axios.get(`${USER_API_END_POINT}/profile`, {
+          withCredentials: true
+        });
+        if (res.data.success) {
+          dispatch(setUser(res.data.user));
+        }
+      } catch (error) {
+        console.log('Not authenticated or error fetching user', error);
+      }
+    };
+    fetchCurrentUser();
+  }, [dispatch]);
 
   return (
     <div>

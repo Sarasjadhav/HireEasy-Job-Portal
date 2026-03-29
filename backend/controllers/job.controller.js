@@ -101,9 +101,8 @@ export const getAdminJobs = async (req, res) => {
     try {
         const adminId = req.id;
         const jobs = await Job.find({ created_by: adminId }).populate({
-            path:'company',
-            createdAt:-1
-        });
+            path:'company'
+        }).sort({createdAt:-1});
         if (!jobs) {
             return res.status(404).json({
                 message: "Jobs not found.",
@@ -116,5 +115,33 @@ export const getAdminJobs = async (req, res) => {
         })
     } catch (error) {
         console.log(error);
+    }
+}
+
+// admin update job
+export const updateJob = async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const { title, description, requirements, salary, location, jobType, experience, position, companyId } = req.body;
+
+        const updateData = {};
+        if (title) updateData.title = title;
+        if (description) updateData.description = description;
+        if (requirements) updateData.requirements = typeof requirements === 'string' ? requirements.split(",") : requirements;
+        if (salary !== undefined) updateData.salary = Number(salary);
+        if (location) updateData.location = location;
+        if (jobType) updateData.jobType = jobType;
+        if (experience !== undefined) updateData.experienceLevel = Number(experience);
+        if (position !== undefined) updateData.position = position;
+        if (companyId) updateData.company = companyId;
+
+        const job = await Job.findByIdAndUpdate(jobId, updateData, { new: true });
+        if (!job) {
+            return res.status(404).json({ message: "Job not found.", success: false });
+        }
+        return res.status(200).json({ message: "Job updated successfully.", job, success: true });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Server error.", success: false });
     }
 }
