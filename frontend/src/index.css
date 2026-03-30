@@ -1,76 +1,208 @@
+/* =========================================================
+   HireEasy – Global Design System
+   Font: Inter (Google Fonts)
+   Theme: Deep Blue + Indigo + Soft White
+   ========================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
-  @layer base {
-    :root {
-      --background: 0 0% 100%;
-      --foreground: 222.2 84% 4.9%;
+/* ── CSS Custom Properties ── */
+@layer base {
+  :root {
+    /* Brand Colors */
+    --brand-primary: 250 82% 56%;       /* Indigo #6A38C2 */
+    --brand-secondary: 14 100% 49%;    /* Coral #F83002 */
+    --brand-accent: 271 76% 42%;       /* Purple #7209b7 */
 
-      --card: 0 0% 100%;
-      --card-foreground: 222.2 84% 4.9%;
+    /* Shadcn / Radix Tokens */
+    --background: 0 0% 100%;
+    --foreground: 224 71% 4%;
 
-      --popover: 0 0% 100%;
-      --popover-foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
 
-      --primary: 222.2 47.4% 11.2%;
-      --primary-foreground: 210 40% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
 
-      --secondary: 210 40% 96.1%;
-      --secondary-foreground: 222.2 47.4% 11.2%;
+    --primary: 250 82% 56%;
+    --primary-foreground: 0 0% 100%;
 
-      --muted: 210 40% 96.1%;
-      --muted-foreground: 215.4 16.3% 46.9%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 224 71% 4%;
 
-      --accent: 210 40% 96.1%;
-      --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-      --destructive: 0 84.2% 60.2%;
-      --destructive-foreground: 210 40% 98%;
+    --accent: 220 14% 96%;
+    --accent-foreground: 224 71% 4%;
 
-      --border: 214.3 31.8% 91.4%;
-      --input: 214.3 31.8% 91.4%;
-      --ring: 222.2 84% 4.9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-      --radius: 0.5rem;
-    }
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 250 82% 56%;
 
-    .dark {
-      --background: 222.2 84% 4.9%;
-      --foreground: 210 40% 98%;
-
-      --card: 222.2 84% 4.9%;
-      --card-foreground: 210 40% 98%;
-
-      --popover: 222.2 84% 4.9%;
-      --popover-foreground: 210 40% 98%;
-
-      --primary: 210 40% 98%;
-      --primary-foreground: 222.2 47.4% 11.2%;
-
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
-
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 20.2% 65.1%;
-
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
-
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 210 40% 98%;
-
-      --border: 217.2 32.6% 17.5%;
-      --input: 217.2 32.6% 17.5%;
-      --ring: 212.7 26.8% 83.9%;
-    }
+    --radius: 0.75rem;
   }
 
-  @layer base {
-    * {
-      @apply border-border;
-    }
-    body {
-      @apply bg-background text-foreground;
-    }
+  * {
+    @apply border-border box-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+/* ── Global Animations ── */
+@layer utilities {
+  /* Fade in from below */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Shimmer loading skeleton */
+  .animate-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Pulse glow for CTA buttons */
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(106, 56, 194, 0.4); }
+    50%       { box-shadow: 0 0 20px rgba(106, 56, 194, 0.8); }
+  }
+
+  /* Float animation for decorative orbs */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-20px); }
+  }
+
+  /* Slow spin for background gradients */
+  .animate-spin-slow {
+    animation: spin 20s linear infinite;
+  }
+
+  /* Slide in from left */
+  .animate-slide-in {
+    animation: slideIn 0.5s ease-out both;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ── Gradient Text Utility ── */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #6A38C2 0%, #9b6dff 100%);
+  }
+
+  .gradient-text-coral {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #F83002 0%, #ff6b35 100%);
+  }
+
+  /* ── Glass Card ── */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(106, 56, 194, 0.08);
+  }
+
+  /* ── Hover Lift Card ── */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(106, 56, 194, 0.15);
+  }
+
+  /* ── Glow Button ── */
+  .btn-glow {
+    @apply transition-all duration-300;
+    box-shadow: 0 4px 15px rgba(106, 56, 194, 0.3);
+  }
+  .btn-glow:hover {
+    box-shadow: 0 6px 25px rgba(106, 56, 194, 0.55);
+    transform: translateY(-1px);
+  }
+
+  /* ── Status Badge Colors ── */
+  .status-accepted {
+    @apply bg-emerald-100 text-emerald-700 border border-emerald-200;
+  }
+  .status-rejected {
+    @apply bg-red-100 text-red-600 border border-red-200;
+  }
+  .status-pending {
+    @apply bg-amber-100 text-amber-700 border border-amber-200;
+  }
+
+  /* ── Input Focus Ring ── */
+  .input-focus {
+    @apply transition-all duration-200;
+  }
+  .input-focus:focus {
+    box-shadow: 0 0 0 3px rgba(106, 56, 194, 0.15);
+    border-color: #6A38C2;
+    outline: none;
+  }
+
+  /* ── Section Divider ── */
+  .section-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #6A38C2 30%, #9b6dff 70%, transparent);
+    border: none;
+    margin: 0 auto;
+  }
+
+  /* ── Scrollbar Customization ── */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #6A38C2;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5b30a6;
+  }
+}
